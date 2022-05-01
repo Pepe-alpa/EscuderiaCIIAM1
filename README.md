@@ -1,13 +1,13 @@
 # EscuderiaCIIAM1
 Repository for CIIAM internal AutoModelCar competence. All rights reserved for EscuderiaCIIAM. Special acknowledgement to Dani Cervantes and CIIAM team. :) 
 
-Para ejecutar los còdigos hay que correrlos desde la terminal, colocando las siguientes instrucciones.
+To execute the different codes you need to write the following instructions in the terminal.
 
-PARA CONDUCCIÒN AUTONOMA:
+FOR NAVIGATION WITHOUT OBSTACLES:
 python 1_autonomus_conduction.py
 
-PARA CONDUCCIÒN CON OBSTACULOS:
+FOR NAVIGATION WITH STATIC OBSTACLES:
 python 2_obstaculos_pepe.py
 
-PARA PARKING:
+FOR PARKING:
 python 4_parking.py
