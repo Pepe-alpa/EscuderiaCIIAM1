@@ -242,7 +242,7 @@ def start(args):
     global sub
     #sub = rospy.Subscriber('Angulo',Int16, Ansrec)
     vel = rospy.Publisher('AutoModelMini/manual_control/speed', Int16,queue_size = 10)
-    dire = rospy.Publisher('AutoModelMini/manual_control/steering', Int16,queue_size = 10)
+    dire = rospy.Publisher('AutoModelMini/manual_control/steering', Int16,queue_size = 30)
     #sub = rospy.Subscriber('scan', LaserScan, callback)
     ic = image_converter()
     rospy.init_node('scan_values','image_converter', anonymous=True)
