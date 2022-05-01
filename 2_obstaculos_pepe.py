@@ -1,3 +1,4 @@
+
 from sensor_msgs.msg import LaserScan
 import roslib
 #roslib.load_manifest('my_package')
@@ -21,6 +22,7 @@ pub = None
 QUEUE_LENGTH=50
 
 estado = 0
+inicio = True
 
 ##pendR=0
 #f = open ('datos.txt','w+')
@@ -256,12 +258,21 @@ def callback(data):
 
     global medida
     global estado
+    global inicio
     # global medidac
     # global medidad
-
+    # grados = data.ranges[:]
+    # for i in range(0,len(grados),1):
+    #     print("Grado {}: {}".format(i,grados[i]))
+    # time.sleep(20)
     medida = data.ranges[0]
-    medidac = data.ranges[15]
-    medidad = data.ranges[325]
+    medidac = data.ranges[20]
+    medidad = data.ranges[330]
+
+    if inicio:
+        vel.publish(0)
+        time.sleep(2)
+        inicio = False
 
     print("estado: ", estado)
 
@@ -269,14 +280,19 @@ def callback(data):
     print('lidar c', medidac)
     print('lidar d', medidad)
 
+
+
 # Estado = 0 El giro se calcula solo (detras del carro)
     if estado == 0:
         dire.publish(gir)
-        vel.publish(-600)
+        vel.publish(-400)
 
         if medida < 1.5 or medidac < 1.5 or medidad < 1.5:
-            vel.publish(-500)
+            # vel.publish(-600)
             estado = 1
+
+        if data.ranges[30] < 1.8 or data.ranges[20]< 1.8:
+            estado = 4
             # variablita = True
 
         # if medida < 1.1 or medidac < 1.1 or medidad < 1.5:
@@ -286,19 +302,23 @@ def callback(data):
 
 # Estado = 1 CAMBIO DE CARRIL
     if estado == 1:
-        dire.publish(130)
-        vel.publish(-600)
+        dire.publish(110)
+        vel.publish(-200)
 
         if medida < 0.6 or medidac < 0.6 or medidad < 0.6:
         # valores = data.ranges[300:315]
         # valores = [x for x in valores if x < 0.8]
         # if len(valores) > 0:
-            dire.publish(150)
-            vel.publish(-300)
+            vel.publish(0)
+            time.sleep(0.5)
+            dire.publish(130)
+            vel.publish(-50)
             time.sleep(0.5)
 
-        if data.ranges[305] < 0.7 or data.ranges[300] < 0.7:
-            # print("bRRRR")
+        if data.ranges[270] < 0.7 or data.ranges[290] < 0.7:
+            # print("bRRRR")o
+            vel.publish(0)
+            time.sleep(0.5)
             estado = 2
 
 # Estado = 2 REBASE
@@ -306,32 +326,64 @@ def callback(data):
     if estado == 2:
 
         print("ESTADO 2")
-        vel.publish(-500)
+        vel.publish(-400)
         dire.publish(0)
         time.sleep(0.5)
+        # dire.publish(10)
+        # vel.publish(-400)
+        # time.sleep(0.5)
         dire.publish(gir)
 
 
-        valores = data.ranges[255:270]
-        valores = [x for x in valores if x < 0.5]
-        if len(valores) >= 5:
+        # valores = data.ranges[255:270]
+        # valores = [x for x in valores if x < 0.5]
+        # if len(valores) >= 10:
+        #     time.sleep(1)
+        #     estado = 3
+
+        valoresD = data.ranges[240:250]
+        # valoresT = data.ranges[240:250]
+        valoresD = [x for x in valoresD if x > 1.5]
+        # valoresT = [y for y in valoresT if x < 0.7]
+        # if len(valoresD) >= 5 and len(valoresT) >= 5:
+        if len(valoresD) >= 5:
+
             time.sleep(1)
             estado = 3
+
 
 # Estado = 3 REGRESO A CARRIL DERECHO
 
     if estado == 3:
         print("ESTADO 3")
-        dire.publish(10)
-        vel.publish(-600)
+        dire.publish(0)
+        vel.publish(-200)
         # valores = data.ranges[210:230]
         # valores = [x for x in valores if x < 0.7]
         # if len(valores) >= 5:
         #     time.sleep(1)
-        time.sleep(7)
+        time.sleep(3)
         estado = 0
 
+# Estado = 4 CAMBIO DE CARRIL EN CURVA
+    if estado == 4:
 
+        dire.publish(180)
+        vel.publish(-50)
+        if data.ranges[325] < 1.4 or data.ranges[327] < 1.4:
+            estado=5
+# Estado = 5 REBASE EN Curva
+    if estado == 5:
+        dire.publish(gir)
+        if data.ranges[270] < 1.0:
+            time.sleep(1)
+            estado = 6
+
+# Estado = 6 REBASE EN Curva
+    if estado == 6:
+        dire.publish(10)
+        time.sleep(1)
+        estado = 0
             # dire.publish(173)
             # vel.publish(-100)
             # time.sleep(1) #1
@@ -373,9 +425,10 @@ def start(args):
     # global variablita
     # variablita = True
     print("Pasando por aqui")
+
     #sub = rospy.Subscriber('Angulo',Int16, Ansrec)
     vel = rospy.Publisher('AutoModelMini/manual_control/speed', Int16,queue_size = 10)
-    dire = rospy.Publisher('AutoModelMini/manual_control/steering', Int16,queue_size = 10)
+    dire = rospy.Publisher('AutoModelMini/manual_control/steering', Int16,queue_size = 30)
     sub = rospy.Subscriber('scan', LaserScan, callback)
     ic = image_converter()
     rospy.init_node('scan_values','image_converter', anonymous=True)
@@ -387,4 +440,5 @@ def start(args):
 
 if __name__ == '__main__':
     start(sys.argv)
-    #f.close()
+#f.close()
+
