@@ -11,3 +11,8 @@ python 2_obstaculos_pepe.py
 
 FOR PARKING:
 python 4_parking.py
+Pasos de ejecucion:
+ Poner en pausa el simulador
+ Reset world
+ Ejecutar codigo
+ Play al simulador
