@@ -289,7 +289,7 @@ def callback(data):
         if carro.size == 0:
             #Avanza 13 segundos directo
             vel.publish(-150)#---150
-            time.sleep(8) #---13
+            time.sleep(12) #---13
             #Giro a la derecha en reversa 3 segundos
             dire.publish(35)
             vel.publish(100)
