@@ -289,26 +289,23 @@ def callback(data):
         if carro.size == 0:
             #Avanza 13 segundos directo
             vel.publish(-150)
-            time.sleep(13)
+            time.sleep(12)
             #Giro a la derecha en reversa 3 segundos
             dire.publish(35)
             vel.publish(100)
-            time.sleep(3)
+            time.sleep(3.7)
             #Giro a la derecha en reversa 4.2 segundos
             dire.publish(-100)
             vel.publish(100)
-            time.sleep(4.2)
+            time.sleep(3.8)
             #Giro a la izquierda 4.5 segundos
-            dire.publish(180)
-            time.sleep(4.5)
+            dire.publish(200)
+            time.sleep(3.5)
             #Giro hacia delante 1.5 segundos
             dire.publish(-20)
             vel.publish(-100)
             time.sleep(1.5)
             vel.publish(0)
-
-
-
 
 
       #  dire.publish(70)
@@ -359,3 +356,4 @@ if __name__ == '__main__':
     start(sys.argv)
     #f.close()
     #f.close()
+
