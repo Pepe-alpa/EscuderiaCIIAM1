@@ -288,8 +288,8 @@ def callback(data):
         autonomo = 0
         if carro.size == 0:
             #Avanza 13 segundos directo
-            vel.publish(-150)
-            time.sleep(12)
+            vel.publish(-150)#---150
+            time.sleep(12) #---13
             #Giro a la derecha en reversa 3 segundos
             dire.publish(35)
             vel.publish(100)
@@ -297,14 +297,14 @@ def callback(data):
             #Giro a la derecha en reversa 4.2 segundos
             dire.publish(-100)
             vel.publish(100)
-            time.sleep(3.8)
+            time.sleep(3.1)#----3.4
             #Giro a la izquierda 4.5 segundos
             dire.publish(200)
             time.sleep(3.5)
             #Giro hacia delante 1.5 segundos
             dire.publish(-20)
             vel.publish(-100)
-            time.sleep(1.5)
+            time.sleep(1.5)#----1
             vel.publish(0)
 
 
